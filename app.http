@@ -1,8 +1,32 @@
+// Make a GET request to fetch all books from the API
 GET http://localhost:3001/books
 ###
+// Make a GET request to fetch a specific book from the API by its ID
+// Specify the ID in the URL path after the '/books/'
+// Example: /books/50 will fetch the book with ID 50
+GET http://localhost:3001/books/50
+###
+// Make a GET request to fetch all authors from the API
 GET http://localhost:3001/authors
 ###
+// Make a GET request to fetch a specific author from the API by its ID
+// Specify the ID in the URL path after the '/authors/'
+// Example: /authors/300 will fetch the author with ID 300
+GET http://localhost:3001/authors/300
+###
+// Make a GET request to fetch all customers from the API
 GET http://localhost:3001/customers
 ###
+// Make a GET request to fetch a specific customer from the API by their ID
+// Specify the ID in the URL path after the '/customers/'
+// Example: /customers/20 will fetch the customer with ID 20
+GET http://localhost:3001/customers/20
+###
+// Make a GET request to fetch all orders from the API
 GET http://localhost:3001/orders
+###
+// Make a GET request to fetch a specific order from the API by its ID
+// Specify the ID in the URL path after the '/orders/'
+// Example: /orders/700 will fetch the order with ID 700
+GET http://localhost:3001/orders/700
 ###
