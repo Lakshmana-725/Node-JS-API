@@ -6,6 +6,12 @@ GET http://localhost:3001/books
 // Example: /books/50 will fetch the book with ID 50
 GET http://localhost:3001/books/50
 ###
+// Make a GET request to fetch all books from the API
+// The URL path is constructed by appending the title of the book to the end of the endpoint.
+// For example, a title of 'The Great Gatsby' will fetch all books with that title.
+// The response will be a JSON array containing the books with the specified title, or an error message if no books are found with that title.
+GET http://localhost:3001/booksTitle
+###
 // Make a GET request to fetch all authors from the API
 GET http://localhost:3001/authors
 ###
@@ -13,6 +19,12 @@ GET http://localhost:3001/authors
 // Specify the ID in the URL path after the '/authors/'
 // Example: /authors/300 will fetch the author with ID 300
 GET http://localhost:3001/authors/300
+###
+# Make a GET request to fetch a specific author's country from the API by their author ID
+# Specify the author ID in the URL path after the '/author/'
+# Example: /author/50 will fetch the country of the author with ID 50
+# The response will be a JSON object containing the author's country, or an error message if the author is not found
+GET http://localhost:3001/author/Country
 ###
 // Make a GET request to fetch all customers from the API
 GET http://localhost:3001/customers
@@ -22,6 +34,13 @@ GET http://localhost:3001/customers
 // Example: /customers/20 will fetch the customer with ID 20
 GET http://localhost:3001/customers/20
 ###
+# This is an example of a GET request to fetch a specific customer by their phone number.
+# The URL path is constructed by appending the phone number to the end of the endpoint.
+# The phone number is expected to be in E.164 format, which is a standard format for representing phone numbers.
+# For example, a phone number in E.164 format for the United States would be "+15555555555".
+# The response will be a JSON object containing the customer's data, or an error message if the customer is not found.
+GET http://localhost:3001/customer/Phone
+###
 // Make a GET request to fetch all orders from the API
 GET http://localhost:3001/orders
 ###
@@ -29,4 +48,11 @@ GET http://localhost:3001/orders
 // Specify the ID in the URL path after the '/orders/'
 // Example: /orders/700 will fetch the order with ID 700
 GET http://localhost:3001/orders/700
+###
+// This is an example of a GET request to fetch all orders based on a specific date.
+// The URL path is constructed by appending the date to the end of the endpoint.
+// The date should be in the format 'YYYY-MM-DD'. 
+// For example, a date of '2021-01-01' will fetch all orders on January 1, 2021.
+// The response will be a JSON array containing the orders for the specified date, or an error message if no orders are found for that date.
+GET http://localhost:3001/ordersDate
 ###

@@ -62,6 +62,24 @@ app.get('/books/:id', (req, res) => {
   });
 });
 
+// Get all books bookTitle
+
+app.get("/booksTitle", (req, res) => {
+  connection.query(`
+    SELECT
+    DISTINCT title FROM books
+    ORDER BY title ASC`,
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching data:", err);
+        res.status(500).send("Error fetching data");
+      } else {
+        res.json(results);
+      }
+    }
+  );
+});
+
 // Get all authors
 
 app.get("/authors", (req, res) => {
@@ -94,6 +112,23 @@ app.get("/authors/:id", (req, res) => {
     }
 
     res.json(results[0]); // Assuming there's only one author with the given ID
+  });
+});
+
+// Get all authors authorCountry
+
+app.get("/author/Country", (req, res) => {
+  connection.query(`
+    SELECT
+    DISTINCT country FROM authors
+    ORDER BY country ASC`,
+    (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      res.status(500).send("Error fetching data");
+    } else {
+      res.json(results);
+    }
   });
 });
 
@@ -132,6 +167,23 @@ app.get("/customers/:id", (req, res) => {
   });
 });
 
+// Get all customers phone numbers
+
+app.get("/customer/Phone", (req, res) => {
+  connection.query(`
+    SELECT
+    DISTINCT phone FROM customers
+    ORDER BY phone ASC`,
+    (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      res.status(500).send("Error fetching data");
+    } else {
+      res.json(results);
+    }
+  });
+});
+
 // Get all orders
 
 app.get("/orders", (req, res) => {
@@ -164,6 +216,19 @@ app.get("/orders/:id", (req, res) => {
     }
 
     res.json(results[0]); // Assuming there's only one orders with the given ID
+  });
+});
+
+// Get all Orders orderDates
+
+app.get("/ordersDate", (req, res) => {
+  connection.query(`SELECT order_date FROM orders`, (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      res.status(500).send("Error fetching data");
+    } else {
+      res.json(results);
+    }
   });
 });
 
