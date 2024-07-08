@@ -1,0 +1,8 @@
+GET http://localhost:3001/books
+###
+GET http://localhost:3001/authors
+###
+GET http://localhost:3001/customers
+###
+GET http://localhost:3001/orders
+###
