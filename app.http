@@ -41,7 +41,7 @@ PUT http://localhost:3001/books_update/1502
 # The URL path is constructed by appending the book ID to the end of the endpoint.
 # For example, a book with ID 1503 will be deleted.
 # The response will be a JSON object containing the ID of the deleted book, or an error message if the book could not be deleted.
-DELETE http://localhost:3001/books_delete/1503
+DELETE http://localhost:3001/books_delete/1499
 ###
 // Make a GET request to fetch a specific book from the API by its ID
 // Specify the ID in the URL path after the '/books/'
@@ -53,6 +53,21 @@ GET http://localhost:3001/books/1500
 // For example, a title of 'The Great Gatsby' will fetch all books with that title.
 // The response will be a JSON array containing the books with the specified title, or an error message if no books are found with that title.
 GET http://localhost:3001/booksTitle
+###
+// Make a GET request to search for books in the bookstore API.
+// The request is made to the /search_book endpoint with the following query parameters:
+//  - search_q: The search query which is used to filter the books by title.
+//  - limit: The maximum number of books to return per request.
+//  - offset: The number of books to skip before starting to return results.
+//  - order_by: The field to sort the books by.
+//  - order: The order in which to sort the books (ascending or descending).
+// The response will be a JSON object containing an array of books that match the search query.
+// The example request below searches for books with "About" in their title, returns the first 50 books (since the default limit is 50),
+// and sorts the books by book_id in ascending order.
+// The response will contain the books that match the search query.
+// The request is made to the localhost server running on port 3001.
+// The URL of the request is :
+GET http://localhost:3001/search_book?search_q=About&limit=50&offset=0&order_by=book_id&order=asc
 ###
 // Make a GET request to fetch all authors from the API
 GET http://localhost:3001/authors

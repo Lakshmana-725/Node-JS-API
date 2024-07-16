@@ -154,43 +154,49 @@ app.delete("/books_delete/:book_id", async (req, res) => {
 
 // Get all books
 
-app.get("/books", (req, res) => {
-  connection.query("SELECT * FROM books", (err, results) => {
-    if (err) {
-      console.error("Error fetching data:", err);
-      res.status(500).send("Error fetching data");
-    } else {
-      res.json(results);
-    }
-  });
+app.get("/books", async (req, res) => {
+  try {
+    const results = await connection.promise().query("SELECT * FROM books");
+    res.json(results[0]);
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).send("Error fetching data");
+  }
 });
 
 // Define API endpoint to get a specific book by ID
-app.get('/books/:id', (req, res) => {
-  // console.log("🚀 ~ file: index.js:45 ~ req:-- ", req)
+app.get("/books/:id", async (req, res) => {
   const bookId = req.params.id;
   const query = `SELECT * FROM books WHERE book_id = ?`;
 
-  connection.query(query, [bookId], (err, results) => {
-    if (err) {
-      console.error('Error fetching data from database:', err);
-      res.status(500).send('Error fetching data');
-      return;
-    }
+  try {
+    const results = await new Promise((resolve, reject) => {
+      connection.query(query, [bookId], (err, results) => {
+        if (err) {
+          console.error("Error fetching data from database:", err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
 
     if (results.length === 0) {
-      res.status(404).send('Book not found');
+      res.status(404).send("Book not found");
       return;
     }
 
     res.json(results[0]); // Assuming there's only one book with the given ID
-  });
+  } catch (err) {
+    console.error("Error fetching data from database:", err);
+    res.status(500).send("Error fetching data");
+  }
 });
 
 // Get all books bookTitle
 
 app.get("/booksTitle", (req, res) => {
-  connection.query(`
+  connection.query(
+    `
     SELECT
     DISTINCT title FROM books
     ORDER BY title ASC`,
@@ -203,6 +209,38 @@ app.get("/booksTitle", (req, res) => {
       }
     }
   );
+});
+
+// REST API for BOOKS
+
+// Get Specific title books
+
+app.get("/search_book", async (req, res) => {
+  const {
+    offset = 0,
+    limit = 50,
+    order = "asc",
+    order_by = "book_id",
+    search_q = "",
+  } = req.query;
+  const query = `SELECT * FROM books WHERE title LIKE '%${search_q}%' ORDER BY ${order_by} ${order} LIMIT ${limit} OFFSET ${offset}`;
+
+  try {
+    const results = await new Promise((resolve, reject) => {
+      connection.query(query, (err, results) => {
+        if (err) {
+          console.error("Error fetching data:", err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+
+    res.json(results);
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).send("Error fetching data");
+  }
 });
 
 // Get all authors
