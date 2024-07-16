@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
   host: "localhost", // Remove 'http://' and just use 'localhost'
   user: "root",
   password: "8252", // Wrap the password in quotes since it's a string
-  database: "sampledatainfo",
+  database: "books_database",
 });
 
 // Test the connection
