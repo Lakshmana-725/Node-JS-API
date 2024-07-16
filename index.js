@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3001; // Choose any available port
@@ -7,6 +8,8 @@ const port = 3001; // Choose any available port
 // Express Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// Middleware
+app.use(bodyParser.json());
 
 // Create MySQL connection
 const connection = mysql.createConnection({
@@ -26,6 +29,128 @@ connection.connect((err) => {
 });
 
 // Create API endpoints to interact with the database
+
+// POST endpoint to create a book
+app.post("/books_post", async (req, res) => {
+  const { book_id, title, author_id, genre_id, price, publish_date } = req.body;
+
+  // Validate required fields
+  if (
+    !book_id ||
+    !title ||
+    !author_id ||
+    !genre_id ||
+    !price ||
+    !publish_date
+  ) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  // Check for duplicate book_id
+  if (book_id) {
+    const checkQuery = "SELECT * FROM books WHERE book_id = ?";
+    const checkValues = book_id;
+
+    try {
+      const rows = await new Promise((resolve, reject) => {
+        connection.query(checkQuery, checkValues, (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        });
+      });
+
+      if (rows.length > 0) {
+        return res.status(409).json({ error: "Book ID already exists" });
+      }
+    } catch (err) {
+      return res.status(500).json({ error: "Database error during ID check" });
+    }
+  }
+  const query =
+    "INSERT INTO books (book_id, title, author_id, genre_id, price, publish_date) VALUES (?, ?, ?, ?, ?, ?)";
+  const values = [book_id, title, author_id, genre_id, price, publish_date];
+
+  try {
+    const result = await new Promise((resolve, reject) => {
+      connection.query(query, values, (err, result) => {
+        if (err) {
+          console.error("Error inserting book:", err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+
+    res
+      .status(201)
+      .json({ message: `Book created`, book_id: result.insertId, ...req.body });
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+// update book
+app.put("/books_update/:book_id", async (req, res) => {
+  const { book_id } = req.params;
+  const { title, author_id, genre_id, price, publish_date } = req.body;
+
+  // Validate required fields
+  if (!title || !author_id || !genre_id || !price || !publish_date) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  const query =
+    "UPDATE books SET title = ?, author_id = ?, genre_id = ?, price = ?, publish_date = ? WHERE book_id = ?";
+  const values = [title, author_id, genre_id, price, publish_date, book_id];
+
+  try {
+    const result = await new Promise((resolve, reject) => {
+      connection.query(query, values, (err, result) => {
+        if (err) {
+          console.error("Error updating book:", err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Book updated", book_id });
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
+});
+
+// Delete book
+
+app.delete("/books_delete/:book_id", async (req, res) => {
+  const { book_id } = req.params;
+
+  const query = "DELETE FROM books WHERE book_id = ?";
+
+  try {
+    const result = await new Promise((resolve, reject) => {
+      connection.query(query, [book_id], (err, result) => {
+        if (err) {
+          console.error("Error deleting book:", err);
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Book deleted", book_id });
+  } catch (err) {
+    res.status(500).json({ error: "Database error" });
+  }
+});
 
 // Get all books
 

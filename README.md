@@ -1,18 +1,17 @@
 # Node-JS-API
-Start with a concise overview of your Node.js API. Explain what the API does, its main features, and its purpose. This helps visitors quickly understand the project's scope and relevance.
 
----
-To install and run your Node.js API project, follow these general steps assuming you have Node.js and npm (Node Package Manager) installed on your system:
+## Overview
 
-### Installation Steps
+This Node.js API provides a robust solution for managing a bookstore's data, including books, authors, customers, and orders. It offers a comprehensive set of endpoints for creating, reading, updating, and deleting entries in a database, making it suitable for building applications that require book management functionalities.
+
+## Installation Steps
 
 1. **Clone the Repository:**
-   Clone your Node.js API project repository from wherever it is hosted (e.g., GitHub).
+   Clone your Node.js API project repository from your hosting platform.
 
    ```bash
    git clone <repository-url>
    cd <project-directory>
-   ```
 
 2. **Install Dependencies:**
    Navigate to your project directory and install the required dependencies using npm.
@@ -20,135 +19,180 @@ To install and run your Node.js API project, follow these general steps assuming
    ```bash
    npm install
    ```
-
-   This command will read the `package.json` file in your project directory and install all the dependencies listed under `dependencies` and `devDependencies`.
-
-
 3. **Set Up Environment Variables (if applicable):**
-   If your project uses environment variables for configuration (e.g., database connection strings, API keys), create a `.env` file in the root of your project and define your variables there. Make sure not to commit this file to version control by adding it to your `.gitignore`.
+   Create a `.env` file in the root of your project for configuration variables.
 
    Example `.env` file:
+
    ```
    PORT=3001
    DATABASE_URL=mongodb://localhost:27017/bookstore
    ```
-
 4. **Start the Server:**
-   Once dependencies are installed and environment variables are set (if needed), you can start your Node.js server.
+   Start your Node.js server.
 
    ```bash
    npm start
    ```
-
-   This command will execute the script defined in the `start` field of your `package.json` file. Typically, it starts your Node.js application, which will listen for incoming requests on the specified port (e.g., 3001 in this case).
-
 5. **Verify the Installation:**
-   Open a web browser or use tools like Postman to send requests to your API endpoints to verify that it is working correctly.
+   Use a web browser or tools like Postman to test the API endpoints.
 
 ### Additional Notes
 
-- **Database Setup:** If your API interacts with a database (e.g., MongoDB, MySQL), ensure the database server is running and that your API's connection configuration (like `DATABASE_URL` in `.env`) is correctly set.
-  
-- **Testing:** Consider writing and running tests for your API endpoints using frameworks like Mocha, Jest, or Postman's built-in testing features to ensure everything functions as expected.
-
-- **Deployment:** For production deployment, consider using services like Heroku, AWS Elastic Beanstalk, or Azure App Service. Ensure your deployment environment is configured with appropriate security measures and scalability options.
-
-Following these steps should help you successfully install and run your Node.js API project locally. Adjustments may be necessary based on specific project requirements and dependencies.
+- **Database Setup:** Ensure your database server is running and configured correctly.
+- **Testing:** Use frameworks like Mocha or Jest to test your API endpoints.
+- **Deployment:** Consider services like Heroku or AWS for production deployment.
 
 ---
+
 ## API Endpoints Documentation
 
-Each section below describes a different endpoint available in the API.
+### 1. Create a Book
 
-### Fetch all books
-- **Description:** Retrieves all books available in the API.
-- **Request:**
-  GET http://localhost:3001/books
+**POST** `/books_post`
 
+- **Description**: Creates a new book entry in the database.
+- **Request Body**:
 
-### Fetch a specific book by ID
-- **Description:** Retrieves a book from the API based on its ID.
-- **Request:**
-  ```http
-  GET http://localhost:3001/books/{id}
-  ```
-  Replace `{id}` with the ID of the book.
+  - `book_id`: Unique identifier for the book (required).
+  - `title`: Title of the book (required).
+  - `author_id`: Unique identifier for the author (required).
+  - `genre_id`: Unique identifier for the genre (required).
+  - `price`: Price of the book (required).
+  - `publish_date`: Publication date of the book (required).
+- **Responses**:
 
-### Fetch books by title
-- **Description:** Retrieves books from the API based on their title.
-- **Request:**
-  ```http
-  GET http://localhost:3001/booksTitle/{title}
-  ```
-  Replace `{title}` with the title of the book.
+  - `201 Created`: Book successfully created.
+  - `400 Bad Request`: Missing required fields.
+  - `409 Conflict`: Book ID, Author ID, and Genre ID combination already exists.
+  - `500 Internal Server Error`: Database error.
 
-### Fetch all authors
-- **Description:** Retrieves all authors from the API.
-- **Request:**
-  ```http
-  GET http://localhost:3001/authors
-  ```
+---
 
-### Fetch a specific author by ID
-- **Description:** Retrieves an author from the API based on their ID.
-- **Request:**
-  ```http
-  GET http://localhost:3001/authors/{id}
-  ```
-  Replace `{id}` with the ID of the author.
+### 2. Update a Book
 
-### Fetch author's country by author ID
-- **Description:** Retrieves the country of an author from the API based on their ID.
-- **Request:**
-  ```http
-  GET http://localhost:3001/author/Country/{id}
-  ```
-  Replace `{id}` with the ID of the author.
+**PUT** `/books_update/:book_id`
 
-### Fetch all customers
-- **Description:** Retrieves all customers from the API.
-- **Request:**
-  ```http
-  GET http://localhost:3001/customers
-  ```
+- **Description**: Updates an existing book entry in the database.
+- **Parameters**:
 
-### Fetch a specific customer by ID
-- **Description:** Retrieves a customer from the API based on their ID.
-- **Request:**
-  ```http
-  GET http://localhost:3001/customers/{id}
-  ```
-  Replace `{id}` with the ID of the customer.
+  - `book_id`: Unique identifier for the book (required in the URL).
+- **Request Body**:
 
-### Fetch customer by phone number
-- **Description:** Retrieves a customer from the API based on their phone number in E.164 format.
-- **Request:**
-  ```http
-  GET http://localhost:3001/customer/Phone/{phoneNumber}
-  ```
-  Replace `{phoneNumber}` with the customer's phone number in E.164 format.
+  - `title`: Title of the book (required).
+  - `author_id`: Unique identifier for the author (required).
+  - `genre_id`: Unique identifier for the genre (required).
+  - `price`: Price of the book (required).
+  - `publish_date`: Publication date of the book (required).
+- **Responses**:
 
-### Fetch all orders
-- **Description:** Retrieves all orders from the API.
-- **Request:**
-  ```http
-  GET http://localhost:3001/orders
-  ```
+  - `200 OK`: Book successfully updated.
+  - `400 Bad Request`: Missing required fields.
+  - `404 Not Found`: Book not found.
+  - `500 Internal Server Error`: Database error.
 
-### Fetch a specific order by ID
-- **Description:** Retrieves an order from the API based on its ID.
-- **Request:**
-  ```http
-  GET http://localhost:3001/orders/{id}
-  ```
-  Replace `{id}` with the ID of the order.
+---
 
-### Fetch orders by date
-- **Description:** Retrieves orders from the API based on a specific date.
-- **Request:**
-  ```http
-  GET http://localhost:3001/ordersDate/{date}
-  ```
-  Replace `{date}` with the date in 'YYYY-MM-DD' format.
+### 3. Delete a Book
+
+**DELETE** `/books_delete/:book_id`
+
+- **Description**: Deletes a book entry from the database.
+- **Parameters**:
+
+  - `book_id`: Unique identifier for the book (required in the URL).
+- **Responses**:
+
+  - `200 OK`: Book successfully deleted.
+  - `404 Not Found`: Book not found.
+  - `500 Internal Server Error`: Database error.
+
+---
+
+### Additional Endpoints
+
+#### Fetch all books
+
+- **GET** `/books`
+- **Description**: Retrieves all books available in the API.
+
+---
+
+#### Fetch a specific book by ID
+
+- **GET** `/books/{id}`
+- **Description**: Retrieves a book from the API based on its ID.
+
+---
+
+#### Fetch books by title
+
+- **GET** `/booksTitle/{title}`
+- **Description**: Retrieves books from the API based on their title.
+
+---
+
+#### Fetch all authors
+
+- **GET** `/authors`
+- **Description**: Retrieves all authors from the API.
+
+---
+
+#### Fetch a specific author by ID
+
+- **GET** `/authors/{id}`
+- **Description**: Retrieves an author from the API based on their ID.
+
+---
+
+#### Fetch author's country by author ID
+
+- **GET** `/author/Country/{id}`
+- **Description**: Retrieves the country of an author from the API based on their ID.
+
+---
+
+#### Fetch all customers
+
+- **GET** `/customers`
+- **Description**: Retrieves all customers from the API.
+
+---
+
+#### Fetch a specific customer by ID
+
+- **GET** `/customers/{id}`
+- **Description**: Retrieves a customer from the API based on their ID.
+
+---
+
+#### Fetch customer by phone number
+
+- **GET** `/customer/Phone/{phoneNumber}`
+- **Description**: Retrieves a customer from the API based on their phone number in E.164 format.
+
+---
+
+#### Fetch all orders
+
+- **GET** `/orders`
+- **Description**: Retrieves all orders from the API.
+
+---
+
+#### Fetch a specific order by ID
+
+- **GET** `/orders/{id}`
+- **Description**: Retrieves an order from the API based on its ID.
+
+---
+
+#### Fetch orders by date
+
+- **GET** `/ordersDate/{date}`
+- **Description**: Retrieves orders from the API based on a specific date.
+
 ---
 © __P.LAKSHMANA RAO (Software Developer)__
+```

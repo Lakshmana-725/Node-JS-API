@@ -1,10 +1,52 @@
 // Make a GET request to fetch all books from the API
 GET http://localhost:3001/books
 ###
+// Make a POST request to create a new book in the API
+// The URL specifies the endpoint for creating a new book
+// The endpoint is http://localhost:3001/books_post
+// The Content-Type header specifies that the request body contains JSON data
+// The request body should contain a JSON object with the following properties:
+// - book_id: an integer representing the ID of the book
+// - title: a string representing the title of the book
+// - author_id: an integer representing the ID of the author of the book
+// - genre_id: an integer representing the ID of the genre of the book
+// - price: a number representing the price of the book
+// - publish_date: a string representing the date the book was published in the format 'YYYY-MM-DD'
+// The response will be a JSON object containing the ID of the newly created book, or an error message if the book could not be created
+POST http://localhost:3001/books_post
+// Set the Content-Type header to specify that the request body contains JSON data
+Content-Type: application/json
+###
+{
+
+  "book_id":1502,
+  "title": "The Great Harry Porter",
+  "author_id": 1000,
+  "genre_id": 2000,
+  "price": 15.99,
+  "publish_date": "1945-04-10"
+}
+
+# Using POST data In Postman.
+###
+# This is an example of a PUT request to update a book in the API.
+# The URL path is constructed by appending the book ID to the end of the endpoint.
+# For example, a book with ID 1502 will be updated.
+# The request body should contain a JSON object with the updated properties of the book.
+# The response will be a JSON object containing the ID of the updated book, or an error message if the book could not be updated.
+PUT http://localhost:3001/books_update/1502
+###
+
+# This is an example of a DELETE request to delete a book from the API.
+# The URL path is constructed by appending the book ID to the end of the endpoint.
+# For example, a book with ID 1503 will be deleted.
+# The response will be a JSON object containing the ID of the deleted book, or an error message if the book could not be deleted.
+PUT http://localhost:3001/books_delete/1503
+###
 // Make a GET request to fetch a specific book from the API by its ID
 // Specify the ID in the URL path after the '/books/'
 // Example: /books/50 will fetch the book with ID 50
-GET http://localhost:3001/books/50
+GET http://localhost:3001/books/1500
 ###
 // Make a GET request to fetch all books from the API
 // The URL path is constructed by appending the title of the book to the end of the endpoint.
