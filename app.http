@@ -41,7 +41,7 @@ PUT http://localhost:3001/books_update/1502
 # The URL path is constructed by appending the book ID to the end of the endpoint.
 # For example, a book with ID 1503 will be deleted.
 # The response will be a JSON object containing the ID of the deleted book, or an error message if the book could not be deleted.
-PUT http://localhost:3001/books_delete/1503
+DELETE http://localhost:3001/books_delete/1503
 ###
 // Make a GET request to fetch a specific book from the API by its ID
 // Specify the ID in the URL path after the '/books/'
