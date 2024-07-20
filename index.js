@@ -1,6 +1,8 @@
 const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
 
 const app = express();
 const port = 3001; // Choose any available port
@@ -29,6 +31,51 @@ connection.connect((err) => {
 });
 
 // Create API endpoints to interact with the database
+
+// Get all Users
+app.get("/users", async (req, res) => {
+  const query = "SELECT * FROM registered_users";
+  try {
+    const results = await new Promise((resolve, reject) => {
+      connection.query(query, (err, results) => {
+        if (err) {
+          console.error("Error fetching data from database:", err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+    res.json(results);
+  } catch (err) {
+    console.error("Error fetching data from database:", err);
+    res.status(500).send("Error fetching data");
+  }
+});
+
+// Get single User
+app.get("/users/:id", async (req, res) => {
+  const userId = req.params.id;
+  const query = `SELECT * FROM registered_users WHERE user_id = ?`;
+  try {
+    const results = await new Promise((resolve, reject) => {
+      connection.query(query, [userId], (err, results) => {
+        if (err) {
+          console.error("Error fetching data from database:", err);
+          return reject(err);
+        }
+        resolve(results);
+      });
+    });
+    if (results.length === 0) {
+      res.status(404).send("User not found");
+      return;
+    }
+    res.json(results[0]);
+  } catch (err) {
+    console.error("Error fetching data from database:", err);
+    res.status(500).send("Error fetching data");
+  }
+});
 
 // POST endpoint to create a book
 app.post("/books_post", async (req, res) => {

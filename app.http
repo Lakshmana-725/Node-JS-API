@@ -113,3 +113,18 @@ GET http://localhost:3001/orders/700
 // The response will be a JSON array containing the orders for the specified date, or an error message if no orders are found for that date.
 GET http://localhost:3001/ordersDate
 ###
+# Authentication 
+GET http://localhost:3001/users/1508
+###
+POST http://localhost:3001/login/
+Content-Type: application/json
+
+{
+  "user_id": 1500,
+  "username": "stacyharding",
+  "email": "kelly00@example.org",
+  "password": "*1dByb(9l5",
+  "registration_date": "2022-08-11",
+  "last_login": "2024-03-17 21:26:20"
+}
+###
